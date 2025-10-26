@@ -2,7 +2,7 @@
   "zh": {
     "title": "故事冒险",
     "subtitle": "选择你的道路，书写属于你的传奇故事",
-    "resetWorld": "重新选择世界观",
+    "resetWorld": "重新选择",
     "aiWriting": "AI正在编织故事",
     "currentWorld": "当前世界观",
     "newWorld": "新世界观",
@@ -34,4 +34,5 @@
     "parseXMLError": "Failed to parse partial XML"
   }
 }
+
 
