@@ -1,0 +1,36 @@
+{
+  "zh": {
+    "title": "故事冒险",
+    "subtitle": "选择你的道路，书写属于你的传奇故事",
+    "resetWorld": "重新选择世界观",
+    "aiWriting": "AI正在编织故事",
+    "currentWorld": "当前世界观",
+    "newWorld": "新世界观",
+    "clearStory": "清空故事",
+    "selectWorld": "选择你的冒险世界",
+    "loadingWorlds": "正在加载世界观...",
+    "loadingError": "加载世界观失败，请刷新页面重试",
+    "wsConnected": "WebSocket连接已建立",
+    "wsReconnecting": "WebSocket连接已关闭，5秒后重连...",
+    "wsError": "WebSocket未连接",
+    "parseError": "解析消息失败",
+    "parseXMLError": "解析部分XML失败"
+  },
+  "en": {
+    "title": "Story Adventure",
+    "subtitle": "Choose your path, write your legendary story",
+    "resetWorld": "Reselect World",
+    "aiWriting": "AI is weaving the story",
+    "currentWorld": "Current World",
+    "newWorld": "New World",
+    "clearStory": "Clear Story",
+    "selectWorld": "Choose Your Adventure World",
+    "loadingWorlds": "Loading worlds...",
+    "loadingError": "Failed to load worlds, please refresh and try again",
+    "wsConnected": "WebSocket connection established",
+    "wsReconnecting": "WebSocket connection closed, reconnecting in 5 seconds...",
+    "wsError": "WebSocket not connected",
+    "parseError": "Failed to parse message",
+    "parseXMLError": "Failed to parse partial XML"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "worlds": [
+    {
+      "id": "fantasy",
+      "name": {
+        "zh": "🏰 奇幻世界",
+        "en": "🏰 Fantasy World"
+      },
+      "description": {
+        "zh": "魔法与剑的世界，龙与勇者的传说",
+        "en": "A world of magic and swords, legends of dragons and heroes"
+      },
+      "prompt": {
+        "zh": "我选择奇幻世界开始冒险。这是一个充满魔法和神秘力量的世界，有着古老的魔法学院、神秘的森林、危险的地下城和强大的龙族。在这个世界里，勇者们手持魔法剑与法杖，与邪恶的巫师、凶猛的怪物战斗。请为我创造一个引人入胜的奇幻冒险故事，我可以是一名年轻的法师学徒、勇敢的骑士，或是拥有特殊能力的冒险者。",
+        "en": "I choose the Fantasy World to begin my adventure. This is a world full of magic and mysterious powers, with ancient magical academies, mystical forests, dangerous dungeons, and mighty dragon clans. In this world, heroes wield magic swords and staffs, battling evil wizards and fierce monsters. Please create an engaging fantasy adventure story for me, where I can be a young mage apprentice, a brave knight, or an adventurer with special abilities."
+      }
+    },
+    {
+      "id": "scifi",
+      "name": {
+        "zh": "🚀 科幻未来",
+        "en": "🚀 Sci-Fi Future"
+      },
+      "description": {
+        "zh": "星际旅行，人工智能，未来科技",
+        "en": "Interstellar travel, artificial intelligence, future technology"
+      },
+      "prompt": {
+        "zh": "我选择科幻未来世界开始冒险。这是一个高度发达的科技时代，人类已经掌握了星际旅行技术，建立了太空殖民地。在这个世界里，人工智能、机器人、基因改造技术非常先进，同时也存在着外星文明、时空旅行等科幻元素。请为我创造一个充满科技感的未来冒险故事，我可以是一名星际探险家、科学家、太空军官，或是拥有改造身体的赛博朋克角色。",
+        "en": "I choose the Sci-Fi Future world to begin my adventure. This is a highly advanced technological era where humanity has mastered interstellar travel and established space colonies. In this world, artificial intelligence, robots, and genetic modification technologies are highly advanced, while also featuring sci-fi elements like alien civilizations and time travel. Please create a technology-rich future adventure story for me, where I can be an interstellar explorer, scientist, space officer, or a cyberpunk character with body modifications."
+      }
+    },
+    {
+      "id": "modern",
+      "name": {
+        "zh": "🏙️ 现代都市",
+        "en": "🏙️ Modern City"
+      },
+      "description": {
+        "zh": "都市传说，超自然现象，现代冒险",
+        "en": "Urban legends, supernatural phenomena, modern adventures"
+      },
+      "prompt": {
+        "zh": "我选择现代都市世界开始冒险。这是一个看似平凡的现代城市，但隐藏着许多超自然现象和都市传说。在这个世界里，普通人的生活中潜藏着神秘事件、超能力者、秘密组织和未解之谜。请为我创造一个现代背景下的神秘冒险故事，我可以是一名调查记者、超能力觉醒者、秘密特工，或是意外卷入超自然事件的普通人。",
+        "en": "I choose the Modern City world to begin my adventure. This is a seemingly ordinary modern city that hides many supernatural phenomena and urban legends. In this world, mysterious events, people with superpowers, secret organizations, and unsolved mysteries lurk in ordinary people's lives. Please create a mysterious adventure story set in a modern background, where I can be an investigative journalist, someone awakening superpowers, a secret agent, or an ordinary person accidentally involved in supernatural events."
+      }
+    },
+    {
+      "id": "historical",
+      "name": {
+        "zh": "⚔️ 历史穿越",
+        "en": "⚔️ Historical Journey"
+      },
+      "description": {
+        "zh": "古代王朝，历史人物，时空冒险",
+        "en": "Ancient dynasties, historical figures, time-travel adventures"
+      },
+      "prompt": {
+        "zh": "我选择历史穿越世界开始冒险。我将穿越到某个历史时期，可能是古代中国的王朝、中世纪的欧洲、古埃及、古希腊罗马等任何历史时代。在这个世界里，我将与历史上的著名人物相遇，参与重大的历史事件，或是改变历史的走向。请为我创造一个历史背景丰富的穿越冒险故事，让我体验不同时代的文化和生活。",
+        "en": "I choose the Historical Journey world to begin my adventure. I will travel to a historical period, which could be ancient Chinese dynasties, medieval Europe, ancient Egypt, ancient Greece and Rome, or any historical era. In this world, I will meet famous historical figures, participate in major historical events, or change the course of history. Please create a time-travel adventure story rich in historical background, allowing me to experience the culture and life of different eras."
+      }
+    },
+    {
+      "id": "horror",
+      "name": {
+        "zh": "👻 恐怖悬疑",
+        "en": "👻 Horror Mystery"
+      },
+      "description": {
+        "zh": "鬼屋探险，诡异事件，恐怖生存",
+        "en": "Haunted house exploration, mysterious events, horror survival"
+      },
+      "prompt": {
+        "zh": "我选择恐怖悬疑世界开始冒险。这是一个充满恐怖和悬疑元素的黑暗世界，有着闹鬼的古宅、诡异的小镇、神秘的仪式和超自然的恶灵。在这个世界里，我需要面对各种恐怖的威胁，解开谜团，求得生存。请为我创造一个充满紧张刺激的恐怖冒险故事，营造恐怖氛围，但请适度控制恐怖程度，重点在悬疑和解谜上。",
+        "en": "I choose the Horror Mystery world to begin my adventure. This is a dark world full of horror and suspense elements, featuring haunted mansions, eerie towns, mysterious rituals, and supernatural evil spirits. In this world, I need to face various terrifying threats, solve mysteries, and survive. Please create a thrilling horror adventure story for me, creating a scary atmosphere while moderately controlling the horror level, focusing on suspense and puzzle-solving."
+      }
+    },
+    {
+      "id": "western",
+      "name": {
+        "zh": "🤠 西部荒野",
+        "en": "🤠 Wild West"
+      },
+      "description": {
+        "zh": "牛仔决斗，淘金热潮，荒野求生",
+        "en": "Cowboy duels, gold rush fever, wilderness survival"
+      },
+      "prompt": {
+        "zh": "我选择西部荒野世界开始冒险。这是19世纪美国西部开拓时期，充满了牛仔、印第安人、淘金者和法外之徒的荒野世界。在这个世界里，正义与邪恶在广袤的荒野中对峙，有着激烈的枪战、马匹追逐和荒野求生。请为我创造一个充满西部风情的冒险故事，我可以是一名正义的治安官、流浪的牛仔、淘金的冒险家，或是寻求复仇的神枪手。",
+        "en": "I choose the Wild West world to begin my adventure. This is the 19th-century American frontier period, a wilderness world filled with cowboys, Native Americans, gold prospectors, and outlaws. In this world, justice and evil face off in the vast wilderness, with intense gunfights, horseback chases, and wilderness survival. Please create an adventure story full of Western flavor for me, where I can be a righteous sheriff, a wandering cowboy, a gold-seeking adventurer, or a revenge-seeking gunslinger."
+      }
+    },
+    {
+      "id": "pirate",
+      "name": {
+        "zh": "🏴‍☠️ 海盗冒险",
+        "en": "🏴‍☠️ Pirate Adventure"
+      },
+      "description": {
+        "zh": "大航海时代，宝藏寻觅，海上传奇",
+        "en": "Age of exploration, treasure hunting, maritime legends"
+      },
+      "prompt": {
+        "zh": "我选择海盗冒险世界开始冒险。这是大航海时代的海洋世界，充满了海盗船、宝藏地图、神秘岛屿和海上传说。在这个世界里，我将在波涛汹涌的大海上航行，寻找传说中的宝藏，与其他海盗船进行激烈的海战，探索未知的岛屿。请为我创造一个充满海洋冒险精神的故事，我可以是一名海盗船长、宝藏猎人、海军军官，或是意外登上海盗船的冒险者。",
+        "en": "I choose the Pirate Adventure world to begin my adventure. This is an oceanic world from the Age of Exploration, filled with pirate ships, treasure maps, mysterious islands, and maritime legends. In this world, I will sail across turbulent seas, search for legendary treasures, engage in fierce naval battles with other pirate ships, and explore unknown islands. Please create a story full of maritime adventure spirit for me, where I can be a pirate captain, treasure hunter, naval officer, or an adventurer who accidentally boarded a pirate ship."
+      }
+    },
+    {
+      "id": "apocalypse",
+      "name": {
+        "zh": "☢️ 末世废土",
+        "en": "☢️ Post-Apocalyptic Wasteland"
+      },
+      "description": {
+        "zh": "核战废土，丧尸围城，末日求生",
+        "en": "Nuclear wasteland, zombie siege, doomsday survival"
+      },
+      "prompt": {
+        "zh": "我选择末世废土世界开始冒险。这是一个经历了核战争、病毒爆发或其他末日灾难后的世界，文明已经崩塌，幸存者们在废墟中艰难求生。在这个世界里，我需要面对变异生物、敌对势力、资源匮乏和环境危险。请为我创造一个末日求生的冒险故事，我可以是一名废土流浪者、幸存者聚居地的守护者、或是寻找安全避难所的探索者。",
+        "en": "I choose the Post-Apocalyptic Wasteland world to begin my adventure. This is a world that has experienced nuclear war, viral outbreaks, or other doomsday disasters, where civilization has collapsed and survivors struggle to live in the ruins. In this world, I need to face mutated creatures, hostile factions, resource scarcity, and environmental dangers. Please create a doomsday survival adventure story for me, where I can be a wasteland wanderer, a guardian of survivor settlements, or an explorer searching for safe havens."
+      }
+    }
+  ]
+}

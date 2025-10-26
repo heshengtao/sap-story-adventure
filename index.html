@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Story Adventure Plugin</title>
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<style>
+:root{
+  --bg: #0f1419;
+  --bg-story: #1a1f2e;
+  --bg-option: #2a3441;
+  --bg-option-hover: #3a4451;
+  --text: #e8e8e8;
+  --text-dim: #8a8f9b;
+  --accent: #ff6b35;
+  --accent-hover: #ff8559;
+  --border: #333538;
+  --radius: 12px;
+  --shadow: 0 8px 24px rgba(0,0,0,.4);
+  --font: -apple-system, BlinkMacSystemFont, "Segui UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  background: var(--bg-story);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.header h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--accent), #ffab35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.header-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.language-selector {
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  color: var(--text-dim);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.language-selector:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 107, 53, 0.1);
+}
+
+.reset-world-btn {
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  color: var(--text-dim);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+.reset-world-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 107, 53, 0.1);
+}
+
+.reset-world-btn.visible {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.story-container {
+  flex: 1;
+  background: var(--bg-story);
+  border-radius: var(--radius);
+  padding: 30px;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+.story-content {
+  font-size: 18px;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  min-height: 100px;
+}
+
+.typing-indicator {
+  display: none;
+  color: var(--accent);
+  font-style: italic;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.typing-indicator.active {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.typing-dots {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.typing-dots span {
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.option-button {
+  background: var(--bg-option);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 18px 24px;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.option-button:hover {
+  background: var(--bg-option-hover);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.option-button:active {
+  transform: translateY(0);
+}
+
+.option-button.selected {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.option-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.option-button .option-number {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.story-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.story-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.story-container::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.story-container::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+.world-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.world-selection h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+.world-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.loading-worlds {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.streaming-text {
+  position: relative;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--accent);
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.story-text {
+  display: inline;
+}
+
+.option-text {
+  display: inline;
+}
+
+.current-world-info {
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 15px;
+  margin-bottom: 20px;
+  display: none;
+}
+
+.current-world-info.visible {
+  display: block;
+}
+
+.current-world-info h3 {
+  color: var(--accent);
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.current-world-info p {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.story-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.story-actions .left-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  color: var(--text-dim);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 107, 53, 0.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .world-options {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+  
+  .container {
+    padding: 15px;
+    gap: 15px;
+  }
+  
+  .story-container {
+    padding: 20px;
+  }
+  
+  .header-actions {
+    position: static;
+    margin-top: 15px;
+    justify-content: center;
+  }
+  
+  .story-actions {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  
+  .story-actions .left-actions {
+    justify-content: center;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fa-solid fa-book-open"></i> <span data-i18n="title">故事冒险</span></h1>
+      <p data-i18n="subtitle">选择你的道路，书写属于你的传奇故事</p>
+      <div class="header-actions">
+        <button class="language-selector" id="languageSelector">
+          <i class="fa-solid fa-language"></i>
+          <span id="currentLang">中文</span>
+        </button>
+        <button class="reset-world-btn" id="resetWorldBtn">
+          <i class="fa-solid fa-globe"></i>
+          <span data-i18n="resetWorld">重新选择世界观</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="story-container" id="storyContainer">
+      <div class="typing-indicator">
+        <i class="fa-solid fa-feather"></i> 
+        <span data-i18n="aiWriting">AI正在编织故事</span>
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      
+      <div class="current-world-info" id="currentWorldInfo">
+        <h3 id="currentWorldName" data-i18n="currentWorld">当前世界观</h3>
+        <p id="currentWorldDesc">世界观描述</p>
+      </div>
+      
+      <div class="story-actions" id="storyActions" style="display: none;">
+        <div class="left-actions">
+          <button class="action-btn" id="newWorldBtn">
+            <i class="fa-solid fa-globe"></i>
+            <span data-i18n="newWorld">新世界观</span>
+          </button>
+          <button class="action-btn" id="clearStoryBtn">
+            <i class="fa-solid fa-trash"></i>
+            <span data-i18n="clearStory">清空故事</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="story-content" id="storyContent">
+        <div class="world-selection">
+          <h2 data-i18n="selectWorld">选择你的冒险世界</h2>
+          <div class="loading-worlds">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span data-i18n="loadingWorlds">正在加载世界观...</span>
+          </div>
+          <div class="world-options" id="worldOptions" style="display: none;">
+            <!-- 世界观选项将在这里动态加载 -->
+          </div>
+        </div>
+      </div>
+
+      <div class="options-container" id="optionsContainer" style="display: none;">
+      </div>
+    </div>
+  </div>
+
+<script>
+let ws;
+let isGenerating = false;
+let lastProcessedContent = '';
+let lastUpdateTime = 0;
+let pendingUpdate = null;
+let worldsData = null;
+let currentWorld = null;
+
+// 增量渲染状态
+let storyTextElement = null;
+let cursorElement = null;
+let currentOptions = [];
+let lastStoryLength = 0;
+let lastOptionsState = [];
+
+// 选项状态管理 - 新增
+let optionElements = []; // 保存选项DOM元素的引用
+let isNewScene = false; // 标记是否是新场景
+
+// 语言相关状态
+let currentLanguage = 'zh';
+let localesData = null;
+
+// 滚动相关变量
+let scrollTimeout = null;
+let isScrolling = false;
+
+// 控制更新频率的参数
+const UPDATE_INTERVAL = 80;
+const TYPING_SPEED = 30;
+
+const storyContent = document.getElementById('storyContent');
+const optionsContainer = document.getElementById('optionsContainer');
+const typingIndicator = document.querySelector('.typing-indicator');
+const worldOptions = document.getElementById('worldOptions');
+const resetWorldBtn = document.getElementById('resetWorldBtn');
+const currentWorldInfo = document.getElementById('currentWorldInfo');
+const currentWorldName = document.getElementById('currentWorldName');
+const currentWorldDesc = document.getElementById('currentWorldDesc');
+const storyActions = document.getElementById('storyActions');
+const newWorldBtn = document.getElementById('newWorldBtn');
+const clearStoryBtn = document.getElementById('clearStoryBtn');
+const languageSelector = document.getElementById('languageSelector');
+const currentLangSpan = document.getElementById('currentLang');
+const storyContainer = document.getElementById('storyContainer');
+
+// 滚动相关函数
+function smoothScrollToBottom(delay = 0) {
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+  }
+  
+  scrollTimeout = setTimeout(() => {
+    if (!isScrolling) {
+      isScrolling = true;
+      storyContainer.scrollTo({
+        top: storyContainer.scrollHeight,
+        behavior: 'smooth'
+      });
+      
+      // 重置滚动标志
+      setTimeout(() => {
+        isScrolling = false;
+      }, 500);
+    }
+  }, delay);
+}
+
+function instantScrollToBottom() {
+  storyContainer.scrollTop = storyContainer.scrollHeight;
+}
+
+// 语言切换功能
+async function loadLocales() {
+  try {
+    const response = await fetch('./locales.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    localesData = await response.json();
+    
+    // 从localStorage获取保存的语言设置
+    const savedLang = localStorage.getItem('story-adventure-lang') || 'zh';
+    await switchLanguage(savedLang);
+  } catch (error) {
+    console.error('加载语言配置失败:', error);
+  }
+}
+
+async function switchLanguage(lang) {
+  if (!localesData || !localesData[lang]) return;
+  
+  currentLanguage = lang;
+  localStorage.setItem('story-adventure-lang', lang);
+  
+  // 更新HTML lang属性
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  
+  // 更新语言选择器显示
+  currentLangSpan.textContent = lang === 'zh' ? '中文' : 'English';
+  
+  // 更新所有带有 data-i18n 属性的元素
+  const elements = document.querySelectorAll('[data-i18n]');
+  elements.forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    if (localesData[lang][key]) {
+      element.textContent = localesData[lang][key];
+    }
+  });
+  
+  // 更新页面标题
+  document.title = localesData[lang].title;
+  
+  // 如果世界选择界面可见，重新渲染
+  const worldSelection = document.querySelector('.world-selection');
+  if (worldSelection && worldSelection.style.display !== 'none') {
+    await loadWorlds();
+  }
+}
+
+function toggleLanguage() {
+  const newLang = currentLanguage === 'zh' ? 'en' : 'zh';
+  switchLanguage(newLang);
+}
+
+function t(key) {
+  return localesData && localesData[currentLanguage] && localesData[currentLanguage][key] 
+    ? localesData[currentLanguage][key] 
+    : key;
+}
+
+// 加载世界观配置
+async function loadWorlds() {
+  try {
+    const response = await fetch('./worlds.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    worldsData = await response.json();
+    renderWorldOptions();
+  } catch (error) {
+    console.error('加载世界观配置失败:', error);
+    const loadingElement = document.querySelector('.loading-worlds');
+    if (loadingElement) {
+      loadingElement.innerHTML = `
+        <i class="fa-solid fa-exclamation-triangle"></i>
+        <span>${t('loadingError')}</span>
+      `;
+    }
+  }
+}
+
+function renderWorldOptions() {
+  if (!worldsData || !worldsData.worlds) return;
+  
+  const loadingElement = document.querySelector('.loading-worlds');
+  if (loadingElement) {
+    loadingElement.style.display = 'none';
+  }
+  
+  worldOptions.innerHTML = '';
+  worldOptions.style.display = 'grid';
+  
+  worldsData.worlds.forEach((world, index) => {
+    const button = document.createElement('button');
+    button.className = 'option-button fade-in';
+    button.dataset.worldId = world.id;
+    
+    // 根据当前语言选择显示内容
+    const name = world.name[currentLanguage] || world.name.zh || world.name;
+    const description = world.description[currentLanguage] || world.description.zh || world.description;
+    
+    button.innerHTML = `
+      <span class="option-number">${index + 1}</span>
+      <strong>${name}</strong><br>
+      <small>${description}</small>
+    `;
+    
+    button.addEventListener('click', () => selectWorld(world));
+    worldOptions.appendChild(button);
+  });
+}
+
+function selectWorld(world) {
+  if (isGenerating) return;
+  
+  currentWorld = world;
+  console.log('选择世界:', world.name);
+  
+  // 根据当前语言选择对应的prompt
+  const prompt = world.prompt[currentLanguage] || world.prompt.zh || world.prompt;
+  console.log('发送提示词:', prompt);
+  
+  // 更新当前世界观信息
+  updateCurrentWorldInfo(world);
+  
+  // 显示重新选择按钮和故事操作按钮
+  resetWorldBtn.classList.add('visible');
+  storyActions.style.display = 'flex';
+  
+  // 先清空消息，然后发送世界观
+  clearMessagesAndSelectWorld(prompt);
+}
+
+function updateCurrentWorldInfo(world) {
+  const name = world.name[currentLanguage] || world.name.zh || world.name;
+  const description = world.description[currentLanguage] || world.description.zh || world.description;
+  
+  currentWorldName.textContent = t('currentWorld');
+  currentWorldDesc.textContent = `${name}: ${description}`;
+  currentWorldInfo.classList.add('visible');
+}
+
+function clearMessagesAndSelectWorld(worldPrompt) {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    console.error(t('wsError'));
+    return;
+  }
+  
+  // 发送清空消息命令
+  ws.send(JSON.stringify({
+    type: 'trigger_clear_message'
+  }));
+  
+  // 稍微延迟后发送世界观选择
+  setTimeout(() => {
+    selectOption(worldPrompt);
+  }, 100);
+}
+
+function resetToWorldSelection() {
+  // 重置所有状态
+  isGenerating = false;
+  lastProcessedContent = '';
+  lastUpdateTime = 0;
+  currentWorld = null;
+  storyTextElement = null;
+  cursorElement = null;
+  lastStoryLength = 0;
+  lastOptionsState = [];
+  
+  // 重置选项相关状态
+  optionElements = [];
+  isNewScene = false;
+  
+  // 重置滚动状态
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = null;
+  }
+  isScrolling = false;
+  
+  // 隐藏UI元素
+  resetWorldBtn.classList.remove('visible');
+  storyActions.style.display = 'none';
+  currentWorldInfo.classList.remove('visible');
+  typingIndicator.classList.remove('active');
+  optionsContainer.style.display = 'none';
+  optionsContainer.innerHTML = '';
+  
+  // 重新显示世界选择界面
+  storyContent.innerHTML = '';
+  const worldSelection = document.createElement('div');
+  worldSelection.className = 'world-selection';
+  worldSelection.innerHTML = `
+    <h2 data-i18n="selectWorld">${t('selectWorld')}</h2>
+    <div class="world-options" id="worldOptions"></div>
+  `;
+  storyContent.appendChild(worldSelection);
+  
+  // 重新渲染世界选项
+  const newWorldOptions = worldSelection.querySelector('#worldOptions');
+  if (worldsData && worldsData.worlds) {
+    worldsData.worlds.forEach((world, index) => {
+      const button = document.createElement('button');
+      button.className = 'option-button fade-in';
+      button.dataset.worldId = world.id;
+      
+      const name = world.name[currentLanguage] || world.name.zh || world.name;
+      const description = world.description[currentLanguage] || world.description.zh || world.description;
+      
+      button.innerHTML = `
+        <span class="option-number">${index + 1}</span>
+        <strong>${name}</strong><br>
+        <small>${description}</small>
+      `;
+      
+      button.addEventListener('click', () => selectWorld(world));
+      newWorldOptions.appendChild(button);
+    });
+  }
+  
+  // 滚动到顶部
+  instantScrollToBottom();
+}
+
+function clearCurrentStory() {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    console.error(t('wsError'));
+    return;
+  }
+  
+  // 发送清空消息命令
+  ws.send(JSON.stringify({
+    type: 'trigger_clear_message'
+  }));
+  
+  // 重置渲染状态
+  storyTextElement = null;
+  cursorElement = null;
+  lastStoryLength = 0;
+  lastOptionsState = [];
+  lastProcessedContent = '';
+  
+  // 重置选项相关状态
+  optionElements = [];
+  isNewScene = false;
+  
+  // 重置滚动状态
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = null;
+  }
+  isScrolling = false;
+  
+  // 清空故事内容区域，但保留世界观信息
+  const storyWrapper = storyContent.querySelector('.streaming-text');
+  if (storyWrapper) {
+    storyWrapper.remove();
+  }
+  
+  // 清空选项并重置状态
+  optionsContainer.innerHTML = '';
+  optionsContainer.style.display = 'none';
+  
+  // 隐藏typing indicator
+  typingIndicator.classList.remove('active');
+  
+  // 如果有当前世界观，重新发送世界观提示
+  if (currentWorld) {
+    setTimeout(() => {
+      const prompt = currentWorld.prompt[currentLanguage] || currentWorld.prompt.zh || currentWorld.prompt;
+      selectOption(prompt);
+    }, 200);
+  }
+}
+
+function initWS() {
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(`${proto}//${location.host}/ws`);
+  
+  ws.onopen = () => {
+    console.log(t('wsConnected'));
+  };
+  
+  ws.onclose = () => {
+    console.log(t('wsReconnecting'));
+    setTimeout(initWS, 5000);
+  };
+  
+  ws.onmessage = (e) => {
+    try {
+      const data = JSON.parse(e.data);
+      if (data.type === 'messages_update' || data.type === 'broadcast_messages') {
+        handleAIResponse(data.data.messages);
+      }
+    } catch (error) {
+      console.error(t('parseError'), error);
+    }
+  };
+}
+
+function handleAIResponse(messages) {
+  if (!messages || messages.length === 0) return;
+  
+  const lastMessage = messages[messages.length - 1];
+  if (lastMessage.role === 'assistant' && lastMessage.content) {
+    throttledProcessContent(lastMessage.content);
+  }
+}
+
+function throttledProcessContent(content) {
+  const now = Date.now();
+  
+  if (content === lastProcessedContent) return;
+  
+  if (now - lastUpdateTime < UPDATE_INTERVAL) {
+    if (pendingUpdate) {
+      clearTimeout(pendingUpdate);
+    }
+    
+    pendingUpdate = setTimeout(() => {
+      processIncrementalContent(content);
+      lastUpdateTime = Date.now();
+      pendingUpdate = null;
+    }, UPDATE_INTERVAL - (now - lastUpdateTime));
+    
+    return;
+  }
+  
+  processIncrementalContent(content);
+  lastUpdateTime = now;
+}
+
+function processIncrementalContent(content) {
+  lastProcessedContent = content;
+  
+  const parsedContent = parsePartialXML(content);
+  
+  if (parsedContent.hasStory || parsedContent.hasOptions) {
+    incrementalUpdateDisplay(parsedContent);
+  }
+  
+  if (isContentComplete(content)) {
+    setTimeout(() => {
+      finishStreaming();
+    }, 200);
+  }
+}
+
+function parsePartialXML(content) {
+  const result = {
+    hasStory: false,
+    hasOptions: false,
+    storyText: '',
+    options: [],
+    isStoryComplete: false
+  };
+  
+  try {
+    const storyMatch = content.match(/<story>(.*?)(<\/story>|$)/s);
+    if (storyMatch) {
+      result.hasStory = true;
+      result.storyText = storyMatch[1].trim();
+      result.isStoryComplete = content.includes('</story>');
+    }
+    
+    const optionMatches = content.match(/<option>.*?(<\/option>|$)/gs);
+    if (optionMatches) {
+      result.hasOptions = true;
+      result.options = optionMatches.map(match => {
+        const optionText = match.replace(/<\/?option>/g, '').trim();
+        const isComplete = match.includes('</option>');
+        return { text: optionText, complete: isComplete };
+      });
+    }
+    
+  } catch (error) {
+    console.error(t('parseXMLError'), error);
+  }
+  
+  return result;
+}
+
+function incrementalUpdateDisplay(parsedContent) {
+  if (!storyTextElement && parsedContent.hasStory) {
+    initializeStoryDisplay();
+  }
+  
+  if (parsedContent.hasStory && storyTextElement) {
+    incrementalUpdateStory(parsedContent.storyText, parsedContent.isStoryComplete);
+  }
+  
+  if (parsedContent.hasOptions) {
+    incrementalUpdateOptions(parsedContent.options);
+  }
+}
+
+function initializeStoryDisplay() {
+  const worldSelection = storyContent.querySelector('.world-selection');
+  if (worldSelection) {
+    worldSelection.style.display = 'none';
+  }
+  
+  typingIndicator.classList.add('active');
+  
+  const storyWrapper = document.createElement('div');
+  storyWrapper.className = 'streaming-text fade-in';
+  
+  storyTextElement = document.createElement('span');
+  storyTextElement.className = 'story-text';
+  
+  cursorElement = document.createElement('span');
+  cursorElement.className = 'cursor';
+  
+  storyWrapper.appendChild(storyTextElement);
+  storyWrapper.appendChild(cursorElement);
+  
+  storyContent.innerHTML = '';
+  storyContent.appendChild(storyWrapper);
+  
+  optionsContainer.style.display = 'flex';
+  
+  lastStoryLength = 0;
+  
+  // 初始化时滚动到底部
+  smoothScrollToBottom(100);
+}
+
+function incrementalUpdateStory(newStoryText, isComplete) {
+  if (!storyTextElement) return;
+  
+  if (newStoryText.length > lastStoryLength) {
+    const newPart = newStoryText.substring(lastStoryLength);
+    const formattedNewPart = newPart.replace(/\n/g, '<br>');
+    
+    let currentText = storyTextElement.innerHTML;
+    let targetText = currentText + formattedNewPart;
+    
+    if (formattedNewPart.length > TYPING_SPEED) {
+      const chunks = chunkString(formattedNewPart, TYPING_SPEED);
+      let chunkIndex = 0;
+      
+      const addChunk = () => {
+        if (chunkIndex < chunks.length) {
+          storyTextElement.innerHTML += chunks[chunkIndex];
+          chunkIndex++;
+          // 在添加内容时滚动
+          smoothScrollToBottom(50);
+          setTimeout(addChunk, UPDATE_INTERVAL);
+        }
+      };
+      
+      addChunk();
+    } else {
+      storyTextElement.innerHTML = targetText;
+      // 内容更新后滚动
+      smoothScrollToBottom(50);
+    }
+    
+    lastStoryLength = newStoryText.length;
+  }
+  
+  if (cursorElement) {
+    cursorElement.style.display = isComplete ? 'none' : 'inline-block';
+  }
+}
+
+// 重构的选项更新函数
+function incrementalUpdateOptions(newOptions) {
+  // 检查是否是新场景（需要重置选中状态）
+  if (shouldStartNewScene(newOptions)) {
+    isNewScene = true;
+    resetSelectionStates();
+  }
+  
+  // 确保有足够的选项元素
+  ensureOptionElements(newOptions.length);
+  
+  // 更新每个选项的内容
+  for (let i = 0; i < newOptions.length; i++) {
+    const newOption = newOptions[i];
+    const lastOption = lastOptionsState[i];
+    
+    if (!lastOption || lastOption.text !== newOption.text || lastOption.complete !== newOption.complete) {
+      updateOptionContent(i, newOption);
+    }
+  }
+  
+  // 隐藏多余的选项元素
+  hideExtraOptions(newOptions.length);
+  
+  lastOptionsState = [...newOptions];
+  isNewScene = false;
+  
+  // 当选项更新时滚动到底部
+  if (newOptions.length > 0) {
+    smoothScrollToBottom(100);
+  }
+}
+
+function shouldStartNewScene(newOptions) {
+  // 如果没有旧选项，这是第一次，不算新场景
+  if (lastOptionsState.length === 0) {
+    return false;
+  }
+  
+  // 如果选项数量变化很大，可能是新场景
+  if (Math.abs(newOptions.length - lastOptionsState.length) > 1) {
+    return true;
+  }
+  
+  // 检查选项内容是否完全不同（表示新场景）
+  if (newOptions.length > 0 && lastOptionsState.length > 0) {
+    let similarCount = 0;
+    for (let i = 0; i < Math.min(newOptions.length, lastOptionsState.length); i++) {
+      const newText = newOptions[i].text.substring(0, 20);
+      const oldText = lastOptionsState[i] ? lastOptionsState[i].text.substring(0, 20) : '';
+      
+      if (newText && oldText && newText.includes(oldText.substring(0, 10))) {
+        similarCount++;
+      }
+    }
+    
+    // 如果相似的选项少于一半，认为是新场景
+    return similarCount < Math.min(newOptions.length, lastOptionsState.length) / 2;
+  }
+  
+  return false;
+}
+
+function ensureOptionElements(requiredCount) {
+  // 如果现有元素不够，创建新的
+  while (optionElements.length < requiredCount) {
+    const button = document.createElement('button');
+    button.className = 'option-button fade-in';
+    
+    // 保存元素引用
+    optionElements.push(button);
+    optionsContainer.appendChild(button);
+  }
+  
+  // 确保所有需要的元素都可见
+  for (let i = 0; i < requiredCount; i++) {
+    if (optionElements[i]) {
+      optionElements[i].style.display = 'block';
+    }
+  }
+}
+
+function updateOptionContent(index, option) {
+  const button = optionElements[index];
+  if (!button) return;
+  
+  // 在新场景时重置状态
+  if (isNewScene) {
+    button.classList.remove('selected', 'disabled');
+    button.onclick = null;
+  }
+  
+  let displayText = option.text;
+  if (!option.complete && displayText) {
+    displayText += '...';
+    button.classList.add('disabled');
+    button.onclick = null;
+  } else if (option.complete) {
+    button.classList.remove('disabled');
+    button.onclick = () => selectOption(option.text);
+  }
+  
+  const newHTML = `
+    <span class="option-number">${index + 1}</span>
+    ${displayText}
+  `;
+  
+  // 只在内容真正改变时更新DOM
+  if (button.innerHTML !== newHTML) {
+    button.innerHTML = newHTML;
+  }
+}
+
+function hideExtraOptions(activeCount) {
+  // 隐藏多余的选项元素，而不是删除
+  for (let i = activeCount; i < optionElements.length; i++) {
+    if (optionElements[i]) {
+      optionElements[i].style.display = 'none';
+      optionElements[i].classList.remove('selected', 'disabled');
+      optionElements[i].onclick = null;
+    }
+  }
+}
+
+function resetSelectionStates() {
+  // 重置所有选项的选中状态
+  optionElements.forEach(button => {
+    button.classList.remove('selected', 'disabled');
+    button.onclick = null;
+  });
+}
+
+function chunkString(str, chunkSize) {
+  const chunks = [];
+  for (let i = 0; i < str.length; i += chunkSize) {
+    chunks.push(str.substring(i, i + chunkSize));
+  }
+  return chunks;
+}
+
+function isContentComplete(content) {
+  const hasCompleteStory = content.includes('<story>') && content.includes('</story>');
+  const optionMatches = content.match(/<option>.*?<\/option>/gs);
+  const hasCompleteOptions = optionMatches && optionMatches.length > 0;
+  
+  return hasCompleteStory && hasCompleteOptions;
+}
+
+function finishStreaming() {
+  typingIndicator.classList.remove('active');
+  
+  if (cursorElement) {
+    cursorElement.style.display = 'none';
+  }
+  
+  // 确保所有完成的选项都可以点击
+  optionElements.forEach((button, index) => {
+    if (button.style.display !== 'none' && lastOptionsState[index]) {
+      button.classList.remove('disabled');
+      const text = button.innerHTML.replace('...', '');
+      button.innerHTML = text;
+      
+      if (lastOptionsState[index].complete) {
+        button.onclick = () => selectOption(lastOptionsState[index].text);
+      }
+    }
+  });
+  
+  isGenerating = false;
+  lastProcessedContent = '';
+  lastUpdateTime = 0;
+  
+  // 完成时最后滚动一次到底部
+  smoothScrollToBottom(300);
+}
+
+function selectOption(choice) {
+  if (isGenerating) return;
+  
+  isGenerating = true;
+  sendToAI(choice);
+  
+  // 重置相关状态，为下一轮选项做准备
+  storyTextElement = null;
+  cursorElement = null;
+  lastStoryLength = 0;
+  
+  // 标记当前选择并禁用其他选项
+  markSelectedOption(choice);
+  
+  // 选择选项后滚动到底部
+  smoothScrollToBottom(200);
+}
+
+function markSelectedOption(selectedChoice) {
+  optionElements.forEach((button, index) => {
+    if (button.style.display === 'none') return;
+    
+    const btnText = button.textContent.replace(/^\d+/, '').trim();
+    if (btnText === selectedChoice.trim() || btnText.includes(selectedChoice.substring(0, 20))) {
+      button.classList.add('selected');
+      button.classList.remove('disabled');
+    } else {
+      button.classList.add('disabled');
+      button.classList.remove('selected');
+    }
+  });
+}
+
+function sendToAI(userChoice) {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    console.error(t('wsError'));
+    return;
+  }
+  
+  ws.send(JSON.stringify({
+    type: 'set_user_input',
+    data: { text: userChoice }
+  }));
+  
+  ws.send(JSON.stringify({
+    type: 'trigger_send_message'
+  }));
+}
+
+// 事件监听器
+resetWorldBtn.addEventListener('click', resetToWorldSelection);
+newWorldBtn.addEventListener('click', resetToWorldSelection);
+clearStoryBtn.addEventListener('click', clearCurrentStory);
+languageSelector.addEventListener('click', toggleLanguage);
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadLocales();
+  await loadWorlds();
+});
+
+// 初始化WebSocket连接
+initWS();
+</script>
+</body>
+</html>
