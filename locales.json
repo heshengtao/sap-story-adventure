@@ -19,7 +19,7 @@
   "en": {
     "title": "Story Adventure",
     "subtitle": "Choose your path, write your legendary story",
-    "resetWorld": "Reselect World",
+    "resetWorld": "Reset",
     "aiWriting": "AI is weaving the story",
     "currentWorld": "Current World",
     "newWorld": "New World",
@@ -34,3 +34,4 @@
     "parseXMLError": "Failed to parse partial XML"
   }
 }
+
