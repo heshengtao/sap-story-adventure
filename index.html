@@ -585,7 +585,7 @@ async function switchLanguage(lang) {
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   
   // 更新语言选择器显示
-  currentLangSpan.textContent = lang === 'zh' ? '中文' : 'English';
+  currentLangSpan.textContent = lang === 'zh' ?  'English' : '中文';
   
   // 更新所有带有 data-i18n 属性的元素
   const elements = document.querySelectorAll('[data-i18n]');
@@ -1266,3 +1266,4 @@ initWS();
 </script>
 </body>
 </html>
+
