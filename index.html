@@ -493,10 +493,10 @@ const STORY_SYSTEM_PROMPT = `你是一个专业的互动故事生成AI。你需�
 [这里写故事内容，要生动有趣，有画面感，长度适中，大约100-200字]
 </story>
 
-<option>选项1的描述</option>
-<option>选项2的描述</option>
-<option>选项3的描述</option>
-<option>选项4的描述</option>
+<choice>选项1的描述</choice>
+<choice>选项2的描述</choice>
+<choice>选项3的描述</choice>
+<choice>选项4的描述</choice>
 
 要求：
 1. 故事内容要连贯，符合所选世界观
@@ -955,12 +955,12 @@ function parsePartialXML(content) {
       result.isStoryComplete = content.includes('</story>');
     }
     
-    const optionMatches = content.match(/<option>.*?(<\/option>|$)/gs);
+    const optionMatches = content.match(/<choice>.*?(<\/option>|$)/gs);
     if (optionMatches) {
       result.hasOptions = true;
       result.options = optionMatches.map(match => {
         const optionText = match.replace(/<\/?option>/g, '').trim();
-        const isComplete = match.includes('</option>');
+        const isComplete = match.includes('</choice>');
         return { text: optionText, complete: isComplete };
       });
     }
@@ -1198,7 +1198,7 @@ function chunkString(str, chunkSize) {
 
 function isContentComplete(content) {
   const hasCompleteStory = content.includes('<story>') && content.includes('</story>');
-  const optionMatches = content.match(/<option>.*?<\/option>/gs);
+  const optionMatches = content.match(/<choice>.*?<\/option>/gs);
   const hasCompleteOptions = optionMatches && optionMatches.length > 0;
   
   return hasCompleteStory && hasCompleteOptions;
