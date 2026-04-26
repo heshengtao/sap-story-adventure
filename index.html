@@ -955,11 +955,11 @@ function parsePartialXML(content) {
       result.isStoryComplete = content.includes('</story>');
     }
     
-    const optionMatches = content.match(/<choice>.*?(<\/option>|$)/gs);
+    const optionMatches = content.match(/<choice>.*?(<\/choice>|$)/gs);
     if (optionMatches) {
       result.hasOptions = true;
       result.options = optionMatches.map(match => {
-        const optionText = match.replace(/<\/?option>/g, '').trim();
+        const optionText = match.replace(/<\/?choice>/g, '').trim();
         const isComplete = match.includes('</choice>');
         return { text: optionText, complete: isComplete };
       });
@@ -1198,7 +1198,7 @@ function chunkString(str, chunkSize) {
 
 function isContentComplete(content) {
   const hasCompleteStory = content.includes('<story>') && content.includes('</story>');
-  const optionMatches = content.match(/<choice>.*?<\/option>/gs);
+  const optionMatches = content.match(/<choice>.*?<\/choice>/gs);
   const hasCompleteOptions = optionMatches && optionMatches.length > 0;
   
   return hasCompleteStory && hasCompleteOptions;
